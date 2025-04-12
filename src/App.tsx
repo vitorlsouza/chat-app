@@ -1,10 +1,13 @@
 import { Chat } from './components/Chat'
-import { ThemeProvider } from '@/components/theme/theme-provider'
+import { ThemeProvider } from '@/context/ThemeContext'
+import { UserProvider } from '@/context/UserContext'
 
 function App() {
   return (
     <ThemeProvider defaultTheme="dark" storageKey="chat-ui-theme">
-      <Chat />
+      <UserProvider>
+        <Chat />
+      </UserProvider>
     </ThemeProvider>
   )
 }

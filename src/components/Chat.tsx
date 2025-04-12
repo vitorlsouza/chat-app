@@ -2,12 +2,14 @@ import React, { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { useAutoScroll } from '@/hooks/useAutoScroll'
 import { Header } from './Header'
-import { getRandomResponse } from '@/data/botResponses'
 import { useLocalStorage } from '@/hooks/useLocalStorage'
 import { Send } from 'lucide-react'
 import { useAutoResizeTextarea } from '@/hooks/useAutoResizeTextarea'
 import { useDevice } from '@/hooks/useDevice'
 import { formatHours } from '@/utils/hours'
+import { useUser } from '@/hooks/useUser'
+import { ProfileSelector } from './ProfileSelector'
+import { getPersonalizedResponse } from '@/utils/responses'
 
 interface Message {
   id: string
@@ -24,6 +26,7 @@ export const Chat: React.FC = () => {
   const { textareaRef, resetHeight } = useAutoResizeTextarea({
     value: inputMessage,
   })
+  const { user } = useUser()
 
   const handleSendMessage = (e: React.FormEvent) => {
     e.preventDefault()
@@ -44,7 +47,7 @@ export const Chat: React.FC = () => {
     setTimeout(() => {
       const botMessage: Message = {
         id: (Date.now() + 1).toString(),
-        text: getRandomResponse(),
+        text: getPersonalizedResponse(user),
         sender: 'bot',
         timestamp: new Date(),
       }
@@ -66,7 +69,9 @@ export const Chat: React.FC = () => {
 
   return (
     <div className="flex h-screen w-full flex-col pt-16">
-      <Header />
+      <Header>
+        <ProfileSelector />
+      </Header>
       <div className="bg-background text-foreground mt-4 flex flex-1 flex-col rounded-lg">
         <div className="flex-1 overflow-y-auto p-4">
           <div className="space-y-4">

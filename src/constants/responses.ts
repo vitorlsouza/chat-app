@@ -1,4 +1,18 @@
-export const botResponses = [
+export const USER_RESPONSES = {
+  '1': [
+    'Oi! Como posso ajudar você hoje? 😊',
+    'Que bom te ver por aqui! Em que posso ajudar?',
+    'Olá! Estou aqui para ajudar!',
+  ],
+  '2': [
+    'Bom dia! Como posso auxiliar você hoje?',
+    'Olá! Em que posso ser útil?',
+    'Bem-vindo! Como posso ajudar?',
+  ],
+  '3': ['E aí! Tudo bem?', 'Oi! Como vai?', 'Fala! Em que posso ajudar?'],
+}
+
+export const BOT_RESPONSES = [
   'Olá! Como posso ajudar você hoje?',
   'Interessante! Me conte mais sobre isso.',
   'Entendi o que você está dizendo. Posso ajudar com mais alguma coisa?',
@@ -20,8 +34,3 @@ export const botResponses = [
   'Essa é uma ótima observação!',
   'Vamos continuar essa conversa interessante?',
 ]
-
-export const getRandomResponse = (): string => {
-  const randomIndex = Math.floor(Math.random() * botResponses.length)
-  return botResponses[randomIndex]
-}
