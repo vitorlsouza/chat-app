@@ -1,71 +1,27 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Button } from '@/components/ui/button'
-import { useAutoScroll } from '@/hooks/useAutoScroll'
 import { Header } from './Header'
-import { useLocalStorage } from '@/hooks/useLocalStorage'
-import { Send } from 'lucide-react'
-import { useAutoResizeTextarea } from '@/hooks/useAutoResizeTextarea'
-import { useDevice } from '@/hooks/useDevice'
+import { Mic, Send, Square } from 'lucide-react'
 import { formatHours } from '@/utils/hours'
-import { useUser } from '@/hooks/useUser'
 import { ProfileSelector } from './ProfileSelector'
-import { getPersonalizedResponse } from '@/utils/responses'
-
-interface Message {
-  id: string
-  text: string
-  sender: 'user' | 'bot'
-  timestamp: Date
-}
+import { AudioMessage } from './AudioMessage'
+import { useChat } from '@/hooks/useChat'
+import { useDevice } from '@/hooks/useDevice'
 
 export const Chat: React.FC = () => {
-  const { messages, setMessages } = useLocalStorage('chat-messages')
-  const [inputMessage, setInputMessage] = useState('')
-  const { bottomRef } = useAutoScroll(messages)
+  const {
+    messages,
+    inputMessage,
+    setInputMessage,
+    handleKeyDown,
+    handleSubmitButtonClick,
+    handleRecordClick,
+    isRecording,
+    textareaRef,
+    bottomRef,
+  } = useChat()
+
   const { isMobile } = useDevice()
-  const { textareaRef, resetHeight } = useAutoResizeTextarea({
-    value: inputMessage,
-  })
-  const { user } = useUser()
-
-  const handleSendMessage = (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!inputMessage.trim()) return
-
-    const userMessage: Message = {
-      id: Date.now().toString(),
-      text: inputMessage,
-      sender: 'user',
-      timestamp: new Date(),
-    }
-
-    setMessages((prevMessages: Message[]) => [...prevMessages, userMessage])
-    setInputMessage('')
-
-    resetHeight()
-
-    setTimeout(() => {
-      const botMessage: Message = {
-        id: (Date.now() + 1).toString(),
-        text: getPersonalizedResponse(user),
-        sender: 'bot',
-        timestamp: new Date(),
-      }
-      setMessages((prevMessages: Message[]) => [...prevMessages, botMessage])
-    }, 1000)
-  }
-
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.key === 'Enter' && !isMobile && !e.shiftKey) {
-      e.preventDefault()
-      handleSendMessage(e)
-    }
-  }
-
-  const handleSubmitButtonClick = (e: React.MouseEvent) => {
-    e.preventDefault()
-    handleSendMessage(e)
-  }
 
   return (
     <div className="flex h-screen w-full flex-col pt-16">
@@ -89,7 +45,16 @@ export const Chat: React.FC = () => {
                       : 'bg-secondary text-secondary-foreground animate__animated animate__messageInLeft'
                   }`}
                 >
-                  <p className="text-sm whitespace-pre-wrap">{message.text}</p>
+                  {message.type === 'audio' ? (
+                    <AudioMessage
+                      audioBase64={message.audioBase64 || ''}
+                      isUser={message.sender === 'user'}
+                    />
+                  ) : (
+                    <p className="text-sm whitespace-pre-wrap">
+                      {message.text}
+                    </p>
+                  )}
                   <span className="flex justify-end text-xs opacity-70">
                     {formatHours(message.timestamp)}
                   </span>
@@ -113,6 +78,15 @@ export const Chat: React.FC = () => {
             rows={1}
             style={{ minHeight: '42px', maxHeight: '120px' }}
           />
+          <Button
+            type="button"
+            onClick={handleRecordClick}
+            variant={isRecording ? 'destructive' : 'outline'}
+            size="icon"
+            className="h-[42px] w-[42px]"
+          >
+            {isRecording ? <Square size={20} /> : <Mic size={20} />}
+          </Button>
           {isMobile ? (
             <div className="flex h-[42px] w-[42px] items-center justify-center rounded-md bg-blue-600 text-white">
               <Send size={20} onClick={handleSubmitButtonClick} />

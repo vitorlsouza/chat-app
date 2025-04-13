@@ -35,10 +35,13 @@ export const ThemeProvider = ({
     root.classList.add(theme)
   }, [theme])
 
-  const handleSetTheme = useCallback((theme: Theme) => {
-    localStorage.setItem(storageKey, theme)
-    setTheme(theme)
-  }, [])
+  const handleSetTheme = useCallback(
+    (theme: Theme) => {
+      localStorage.setItem(storageKey, theme)
+      setTheme(theme)
+    },
+    [storageKey],
+  )
 
   const contextValue = useMemo(() => {
     return {
