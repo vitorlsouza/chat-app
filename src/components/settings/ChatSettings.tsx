@@ -29,7 +29,7 @@ export const ChatSettings: React.FC = () => {
 
   return (
     <DropdownMenu open={open} onOpenChange={setOpen}>
-      <DropdownMenuTrigger asChild>
+      <DropdownMenuTrigger asChild data-testid="chat-settings">
         <Button variant="outline" size="icon" className="h-8 w-8">
           <Settings size={18} />
         </Button>

@@ -20,6 +20,7 @@ export const AudioMessage: React.FC<AudioMessageProps> = ({ audioBase64 }) => {
     >
       {isReady ? (
         <audio
+          data-testid="audio-message"
           controls
           controlsList="nodownload noplaybackrate"
           preload="metadata"

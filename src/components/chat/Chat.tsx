@@ -1,6 +1,6 @@
 import React from 'react'
 import { Button } from '@/components/ui/button'
-import { Header } from '../Header'
+import { Header } from './Header'
 import { Mic, Send, Square } from 'lucide-react'
 import { useChat } from '@/hooks/useChat'
 import { useDevice } from '@/hooks/useDevice'
@@ -48,6 +48,7 @@ export const Chat: React.FC = () => {
             style={{ minHeight: '42px', maxHeight: '120px' }}
           />
           <Button
+            data-testid="record-button"
             type="button"
             onClick={handleRecordClick}
             variant={isRecording ? 'destructive' : 'outline'}
@@ -58,10 +59,15 @@ export const Chat: React.FC = () => {
           </Button>
           {isMobile ? (
             <div className="flex h-[42px] w-[42px] items-center justify-center rounded-md bg-blue-600 text-white">
-              <Send size={20} onClick={handleSubmitButtonClick} />
+              <Send
+                size={20}
+                onClick={handleSubmitButtonClick}
+                data-testid="submit-button"
+              />
             </div>
           ) : (
             <Button
+              data-testid="submit-button"
               type="button"
               onClick={handleSubmitButtonClick}
               className="h-[42px] rounded-md bg-blue-600 px-4 font-medium text-white transition-colors duration-200 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600"

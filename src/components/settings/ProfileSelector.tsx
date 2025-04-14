@@ -13,7 +13,7 @@ export function ProfileSelector() {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
+      <DropdownMenuTrigger asChild data-testid="profile-selector">
         <Button variant="outline" size="icon">
           <User className="h-[1.2rem] w-[1.2rem]" />
           <span className="sr-only">Selecionar perfil</span>

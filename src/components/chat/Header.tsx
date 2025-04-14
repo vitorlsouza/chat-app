@@ -1,7 +1,7 @@
-import { ThemeToggle } from './theme/ThemeToogle'
+import { ThemeToggle } from '../theme/ThemeToogle'
 import { useUser } from '@/hooks/useUser'
-import { ProfileSelector } from './settings/ProfileSelector'
-import { ChatSettings } from './settings/ChatSettings'
+import { ProfileSelector } from '../settings/ProfileSelector'
+import { ChatSettings } from '../settings/ChatSettings'
 
 export function Header() {
   const { user } = useUser()
