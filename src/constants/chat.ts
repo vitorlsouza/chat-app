@@ -57,5 +57,5 @@ export const BOT_COLORS_OPTIONS = [
   },
 ]
 
-export const DEFAULT_BOT_COLOR = 'bg-blue-600 text-white'
-export const DEFAULT_USER_COLOR = 'bg-gray-200 text-gray-900'
+export const DEFAULT_USER_COLOR = 'bg-blue-600 text-white'
+export const DEFAULT_BOT_COLOR = 'bg-gray-200 text-gray-900'
