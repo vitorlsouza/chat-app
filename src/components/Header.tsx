@@ -1,11 +1,9 @@
-import React from 'react'
-import { ThemeToggle } from './ThemeToogle'
+import { ThemeToggle } from './theme/ThemeToogle'
 import { useUser } from '@/hooks/useUser'
-interface HeaderProps {
-  children?: React.ReactNode
-}
+import { ProfileSelector } from './settings/ProfileSelector'
+import { ChatSettings } from './settings/ChatSettings'
 
-export function Header({ children }: HeaderProps) {
+export function Header() {
   const { user } = useUser()
 
   return (
@@ -16,7 +14,8 @@ export function Header({ children }: HeaderProps) {
         </div>
         <div className="flex flex-1 items-center justify-between space-x-2 md:justify-end">
           <div className="flex items-center gap-2">
-            {children}
+            <ChatSettings />
+            <ProfileSelector />
             <ThemeToggle />
           </div>
         </div>

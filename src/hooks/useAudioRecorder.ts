@@ -1,15 +1,19 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import MicRecorder from 'mic-recorder-to-mp3'
 
-interface UseAudioRecorderReturn {
+interface UseAudioRecorderProps {
   isRecording: boolean
   startRecording: () => Promise<void>
   stopRecording: () => Promise<string>
+  audioUrl: string
+  isReady: boolean
 }
 
-export function useAudioRecorder(): UseAudioRecorderReturn {
+export function useAudioRecorder(audioBase64?: string): UseAudioRecorderProps {
   const [isRecording, setIsRecording] = useState(false)
   const [recorder, setRecorder] = useState<MicRecorder | null>(null)
+  const [audioUrl, setAudioUrl] = useState<string>('')
+  const [isReady, setIsReady] = useState(false)
 
   const startRecording = useCallback(async () => {
     try {
@@ -69,9 +73,46 @@ export function useAudioRecorder(): UseAudioRecorderReturn {
     return `data:${blob.type};base64,${base64}`
   }
 
+  useEffect(() => {
+    if (audioUrl) {
+      URL.revokeObjectURL(audioUrl)
+    }
+
+    if (!audioBase64) return
+
+    try {
+      const processAudio = async () => {
+        const base64WithoutPrefix = audioBase64.replace(
+          /^data:audio\/mp3;base64,/,
+          '',
+        )
+
+        const binaryString = window.atob(base64WithoutPrefix)
+
+        const bytes = new Uint8Array(binaryString.length)
+        for (let i = 0; i < binaryString.length; i++) {
+          bytes[i] = binaryString.charCodeAt(i)
+        }
+
+        const blob = new Blob([bytes], { type: 'audio/mp3' })
+        const url = URL.createObjectURL(blob)
+
+        setAudioUrl(url)
+        setIsReady(true)
+      }
+
+      processAudio()
+    } catch (error) {
+      console.error('Error processing audio:', error)
+      setIsReady(false)
+    }
+  }, [audioBase64])
+
   return {
     isRecording,
     startRecording,
     stopRecording,
+    audioUrl,
+    isReady,
   }
 }

@@ -1,4 +1,4 @@
-export type UserProfile = {
+export interface IUserProfile {
   id: number
   name: string
 }

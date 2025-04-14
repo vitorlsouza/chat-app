@@ -1,12 +1,10 @@
 import React from 'react'
 import { Button } from '@/components/ui/button'
-import { Header } from './Header'
+import { Header } from '../Header'
 import { Mic, Send, Square } from 'lucide-react'
-import { formatHours } from '@/utils/hours'
-import { ProfileSelector } from './ProfileSelector'
-import { AudioMessage } from './AudioMessage'
 import { useChat } from '@/hooks/useChat'
 import { useDevice } from '@/hooks/useDevice'
+import { Message } from './Message'
 
 export const Chat: React.FC = () => {
   const {
@@ -25,41 +23,12 @@ export const Chat: React.FC = () => {
 
   return (
     <div className="flex h-screen w-full flex-col pt-16">
-      <Header>
-        <ProfileSelector />
-      </Header>
+      <Header />
       <div className="bg-background text-foreground mt-4 flex flex-1 flex-col rounded-lg">
         <div className="flex-1 overflow-y-auto p-4">
           <div className="space-y-4">
             {messages.map((message) => (
-              <div
-                key={message.id}
-                className={`animate__animated animate__messageIn flex ${
-                  message.sender === 'user' ? 'justify-end' : 'justify-start'
-                }`}
-              >
-                <div
-                  className={`flex max-w-[70%] flex-col gap-2 rounded-lg p-3 ${
-                    message.sender === 'user'
-                      ? 'animate__animated animate__messageInRight bg-blue-600 text-white dark:bg-blue-500'
-                      : 'bg-secondary text-secondary-foreground animate__animated animate__messageInLeft'
-                  }`}
-                >
-                  {message.type === 'audio' ? (
-                    <AudioMessage
-                      audioBase64={message.audioBase64 || ''}
-                      isUser={message.sender === 'user'}
-                    />
-                  ) : (
-                    <p className="text-sm whitespace-pre-wrap">
-                      {message.text}
-                    </p>
-                  )}
-                  <span className="flex justify-end text-xs opacity-70">
-                    {formatHours(message.timestamp)}
-                  </span>
-                </div>
-              </div>
+              <Message key={message.id} message={message} />
             ))}
             <div ref={bottomRef} />
           </div>

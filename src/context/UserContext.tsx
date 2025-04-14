@@ -1,14 +1,9 @@
 import { createContext, useEffect, useMemo, useState, useCallback } from 'react'
-import { UserProfile } from '@/types/user'
-
-const DEFAULT_USER: UserProfile = {
-  id: 1,
-  name: 'Fulano',
-}
-
+import { IUserProfile } from '@/types/user'
+import { DEFAULT_USER } from '@/constants/user'
 export interface IUserContext {
-  user: UserProfile
-  updateUser: (user: UserProfile) => void
+  user: IUserProfile
+  updateUser: (user: IUserProfile) => void
 }
 
 export const UserContext = createContext<IUserContext>({} as IUserContext)
@@ -16,7 +11,7 @@ export const UserContext = createContext<IUserContext>({} as IUserContext)
 export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   const storageKey = 'user-profile'
 
-  const [user, setUser] = useState<UserProfile>(() => {
+  const [user, setUser] = useState<IUserProfile>(() => {
     const savedUser = localStorage.getItem(storageKey)
     return savedUser ? JSON.parse(savedUser) : DEFAULT_USER
   })
@@ -26,7 +21,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   }, [user, storageKey])
 
   const updateUser = useCallback(
-    (newUser: UserProfile) => {
+    (newUser: IUserProfile) => {
       setUser(newUser)
     },
     [setUser],

@@ -1,5 +1,5 @@
 import { STORAGE_KEY, DEFAULT_THEME } from '@/constants/theme'
-import { Theme, ThemeProviderProps } from '@/types/theme'
+import { Theme, IThemeProviderProps } from '@/types/theme'
 import { createContext, useEffect, useMemo, useState, useCallback } from 'react'
 export interface IThemeContext {
   theme: Theme
@@ -12,7 +12,7 @@ export const ThemeProvider = ({
   children,
   defaultTheme = DEFAULT_THEME,
   storageKey = STORAGE_KEY,
-}: ThemeProviderProps) => {
+}: IThemeProviderProps) => {
   const [theme, setTheme] = useState<Theme>(
     () => (localStorage.getItem(storageKey) as Theme) || defaultTheme,
   )

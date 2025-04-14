@@ -1,14 +1,14 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
-import { UserProfile } from '@/types/user'
+import { IUserProfile } from '@/types/user'
 import { getPersonalizedResponse } from '@/utils/responses'
-import { Message } from '@/types/chat'
+import { IMessageProps } from '@/types/chat'
 import { v4 as uuidv4 } from 'uuid'
 
 interface MessageState {
-  messages: Message[]
-  addMessage: (message: Omit<Message, 'id' | 'timestamp'>) => void
-  addBotResponse: (user: UserProfile) => void
+  messages: IMessageProps[]
+  addMessage: (message: Omit<IMessageProps, 'id' | 'timestamp'>) => void
+  addBotResponse: (user: IUserProfile, botName: string) => void
   clearMessages: () => void
 }
 
@@ -16,7 +16,7 @@ export const useMessageStore = create<MessageState>()(
   persist(
     (set) => ({
       messages: [],
-      addMessage: (message: Omit<Message, 'id' | 'timestamp'>) => {
+      addMessage: (message: Omit<IMessageProps, 'id' | 'timestamp'>) => {
         set((state: MessageState) => ({
           messages: [
             ...state.messages,
@@ -28,7 +28,7 @@ export const useMessageStore = create<MessageState>()(
           ],
         }))
       },
-      addBotResponse: (user: UserProfile) => {
+      addBotResponse: (user: IUserProfile, botName: string) => {
         setTimeout(() => {
           set((state: MessageState) => ({
             messages: [
@@ -39,6 +39,7 @@ export const useMessageStore = create<MessageState>()(
                 sender: 'bot',
                 timestamp: new Date(),
                 type: 'text',
+                name: botName,
               },
             ],
           }))

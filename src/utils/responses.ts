@@ -1,7 +1,7 @@
 import { USER_RESPONSES, BOT_RESPONSES } from '@/constants/responses'
-import { UserProfile } from '@/types/user'
+import { IUserProfile } from '@/types/user'
 
-export function getPersonalizedResponse(user: UserProfile): string {
+export function getPersonalizedResponse(user: IUserProfile): string {
   const responses =
     USER_RESPONSES[user.id.toString() as keyof typeof USER_RESPONSES]
   return responses[Math.floor(Math.random() * responses.length)]

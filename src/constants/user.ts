@@ -3,3 +3,8 @@ export const USERS = [
   { value: 2, label: 'Ciclano' },
   { value: 3, label: 'Beltrano' },
 ]
+
+export const DEFAULT_USER = {
+  id: 1,
+  name: 'Fulano',
+}
